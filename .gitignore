@@ -43,3 +43,12 @@ ENV/
 
 # Mac OS
 .DS_Store
+
+# MongoDB
+*.mongodb
+mongodb.log
+
+# Custom test/fix scripts
+test_*.py
+fix_*.py
+patch_*.py
