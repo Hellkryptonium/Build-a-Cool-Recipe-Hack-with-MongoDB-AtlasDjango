@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Smart Recipe App - Home{% endblock %}
+
+{% block header %}
+<div class="banner">
+    <div class="container text-center">
+        <h1>Smart Recipe App</h1>
+        <p class="lead">Discover delicious recipes and get AI-powered recommendations</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>All Recipes</h2>
+            <a href="{% url 'add_recipe' %}" class="btn btn-success">Add New Recipe</a>
+        </div>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for recipe in recipes %}
+    <div class="col">
+        <div class="card recipe-card">
+            <div class="card-body">
+                <h5 class="card-title">{{ recipe.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ recipe.category }}</h6>
+                <p class="card-text">Cooking time: {{ recipe.cooking_time }} minutes</p>
+                <p class="card-text">Servings: {{ recipe.servings }}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{% url 'recipe_detail' recipe.pk %}" class="btn btn-primary">View Recipe</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            <p>No recipes found. <a href="{% url 'add_recipe' %}">Add your first recipe</a>!</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

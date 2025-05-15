@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit{% else %}Add{% endif %} Recipe - Smart Recipe App{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h2>{% if form.instance.pk %}Edit{% else %}Add New{% endif %} Recipe</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                        {{ form.title.errors }}
+                        <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" 
+                               class="form-control" value="{{ form.title.value|default:'' }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.category.id_for_label }}" class="form-label">Category</label>
+                        {{ form.category.errors }}
+                        <input type="text" name="{{ form.category.name }}" id="{{ form.category.id_for_label }}" 
+                               class="form-control" value="{{ form.category.value|default:'' }}" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.cooking_time.id_for_label }}" class="form-label">Cooking Time (minutes)</label>
+                            {{ form.cooking_time.errors }}
+                            <input type="number" name="{{ form.cooking_time.name }}" id="{{ form.cooking_time.id_for_label }}" 
+                                   class="form-control" value="{{ form.cooking_time.value|default:'' }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.servings.id_for_label }}" class="form-label">Servings</label>
+                            {{ form.servings.errors }}
+                            <input type="number" name="{{ form.servings.name }}" id="{{ form.servings.id_for_label }}" 
+                                   class="form-control" value="{{ form.servings.value|default:'' }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.ingredients.id_for_label }}" class="form-label">Ingredients</label>
+                        {{ form.ingredients.errors }}
+                        <textarea name="{{ form.ingredients.name }}" id="{{ form.ingredients.id_for_label }}" 
+                                  class="form-control" rows="5" placeholder="Enter ingredients, one per line" required>{{ form.ingredients.value|default:'' }}</textarea>
+                        <small class="form-text text-muted">Enter each ingredient on a new line</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.instructions.id_for_label }}" class="form-label">Instructions</label>
+                        {{ form.instructions.errors }}
+                        <textarea name="{{ form.instructions.name }}" id="{{ form.instructions.id_for_label }}" 
+                                  class="form-control" rows="8" placeholder="Enter cooking instructions" required>{{ form.instructions.value|default:'' }}</textarea>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            {% if form.instance.pk %}Update{% else %}Create{% endif %} Recipe
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

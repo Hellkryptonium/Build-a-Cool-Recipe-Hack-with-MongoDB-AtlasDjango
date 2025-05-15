@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ recipe.title }} - Smart Recipe App{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>{{ recipe.title }}</h1>
+        <p class="text-muted">
+            <span class="badge bg-primary">{{ recipe.category }}</span>
+            <span class="ms-2">{{ recipe.cooking_time }} minutes</span>
+            <span class="ms-2">{{ recipe.servings }} servings</span>
+        </p>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'edit_recipe' recipe.pk %}" class="btn btn-outline-primary">Edit</a>
+        <a href="{% url 'delete_recipe' recipe.pk %}" class="btn btn-outline-danger ms-2">Delete</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Ingredients</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for ingredient in recipe.ingredients.split %}
+                    <li class="list-group-item">{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Instructions</h5>
+            </div>
+            <div class="card-body">
+                <div class="instructions">
+                    {{ recipe.instructions|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>Recipe Recommendations</h3>
+        <p>Based on this recipe's ingredients, you might also like:</p>
+        <div id="recommendations-loading" class="text-center py-4">            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Getting Gemini recommendations...</p>
+        </div>
+        <div id="recommendations-container" class="row row-cols-1 row-cols-md-3 g-4" style="display: none;"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fetch recipe recommendations
+        fetch('{% url "get_recommendations" recipe.pk %}')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('recommendations-container');
+                document.getElementById('recommendations-loading').style.display = 'none';
+                container.style.display = 'flex';
+                
+                data.forEach(recommendation => {
+                    const card = document.createElement('div');
+                    card.className = 'col';
+                    card.innerHTML = `
+                        <div class="card h-100 recommendation">
+                            <div class="card-body">
+                                <h5 class="card-title">${recommendation.title}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Main Ingredients</h6>
+                                <ul class="mb-3">
+                                    ${recommendation.ingredients.map(i => `<li>${i}</li>`).join('')}
+                                </ul>
+                                <p class="card-text">${recommendation.description}</p>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching recommendations:', error);
+                document.getElementById('recommendations-loading').innerHTML = 
+                    '<div class="alert alert-danger">Error loading recommendations. Please try again later.</div>';
+            });
+    });
+</script>
+{% endblock %}

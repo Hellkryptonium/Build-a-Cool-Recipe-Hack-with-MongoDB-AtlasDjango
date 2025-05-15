@@ -1,0 +1,86 @@
+/* Custom styles for Smart Recipe App */
+
+/* Recipe card animation */
+.recipe-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Banner styles */
+.banner {
+    background: linear-gradient(135deg, #4CAF50, #2196F3);
+    color: white;
+    padding: 60px 0;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.banner h1 {
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+/* Recommendation styles */
+.recommendation {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+}
+
+.recommendation:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* Form styling */
+.form-control:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #3d8b40;
+    border-color: #3d8b40;
+}
+
+/* Ingredients and instructions styling */
+.instructions {
+    line-height: 1.7;
+}
+
+/* Loading animation */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+/* Footer styling */
+footer {
+    margin-top: 80px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .banner {
+        padding: 40px 0;
+    }
+    
+    .banner h1 {
+        font-size: 2rem;
+    }
+}
